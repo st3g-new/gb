@@ -11,15 +11,11 @@ public class HomeWorkApp {
         //задание 4
         printString("Тестовая строка", 2);
         //задание 5
-        System.out.println(checkYear(1500));
+        System.out.println(checkYear(0));
     }
 
     private static boolean checkSumInRange(int a, int b) {
-        if (a + b >= 10 && a + b <= 20) {
-            return true;
-        } else {
-            return false;
-        }
+        return a + b >= 10 && a + b <= 20;
     }
 
     private static void printNumber(int a) {
@@ -31,11 +27,7 @@ public class HomeWorkApp {
     }
 
     private static boolean positiveOrNegativeNumber(int a) {
-        if (a >= 0) {
-            return false;
-        } else {
-            return true;
-        }
+        return a < 0;
     }
 
     private static void printString(String text, int count) {
@@ -45,15 +37,6 @@ public class HomeWorkApp {
     }
 
     private static boolean checkYear(int year) {
-        if (year % 400 == 0) {
-            return true;
-        }
-        if (year % 100 == 0) {
-            return false;
-        }
-        if (year % 4 == 0) {
-            return true;
-        }
-        return false;
+        return ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0));
     }
 }
