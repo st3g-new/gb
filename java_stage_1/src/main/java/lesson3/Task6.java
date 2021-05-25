@@ -7,12 +7,13 @@ public class Task6 {
         maxAndMinValueInArray();
     }
 
+	//что закомментировано - это как я решил задание
     private static void maxAndMinValueInArray() {
         int[] numbers = {1, -4, 3, 55, -13, 123, 0, 5};
         System.out.println("Массив: " + Arrays.toString(numbers));
-        int min = Integer.MAX_VALUE;
-        int max = Integer.MIN_VALUE;
-        for (int i = 0; i < numbers.length; i++) {
+        int min = numbers[0]; //int min = Integer.MAX_VALUE;
+        int max = numbers[0]; //int max = Integer.MIN_VALUE;
+        for (int i = 1/*i = 0*/; i < numbers.length; i++) {
             if (numbers[i] > max) {
                 max = numbers[i];
             }

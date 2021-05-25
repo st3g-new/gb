@@ -10,17 +10,15 @@ public class Task4 {
         System.out.println("Массив до изменения:");
         printElementsOfTwoDimensionalArray(numbers);
 
-        for (int i = 0; i < count; i++) {
-            for (int j = 0; j < count; j++) {
-                if (i == j) {
-                    numbers[i][j] = 1;
-                }
-            }
+        for (int i = 0; i < count; i++) {            
+            numbers[i][i] = 1; 
+			numbers[i][count-i-1] = 1;
         }
-        for (int i = 0, j = count - 1; i < count && j >= 0; i++, j--) {
-            numbers[i][j] = 1;
-        }
-
+		//как я решил
+        //for (int i = 0, j = count - 1; i < count && j >= 0; i++, j--) {
+        //    numbers[i][j] = 1;
+        //}
+		
         System.out.println("Массив после изменения:");
         printElementsOfTwoDimensionalArray(numbers);
     }
