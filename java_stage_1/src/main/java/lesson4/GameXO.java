@@ -10,8 +10,11 @@ public class GameXO {
     public static final char DOT_X = 'X';
     public static final char DOT_O = 'O';
     public static char[][] map;
+    public static int humanX;
+    public static int humanY;
     public static Scanner sc = new Scanner(System.in);
     public static Random rand = new Random();
+
 
     public static void main(String[] args) {
         initMap();
@@ -38,34 +41,65 @@ public class GameXO {
                 break;
             }
         }
+        sc.close();
         System.out.println("Игра закончена");
     }
 
-    public static boolean checkWin(char symb) {
-        int diag1 = 0, diag2 = 0;
+    public static boolean checkWin(char symbol) {
+        if (getCountSymbolInLeftDiagonal(symbol) == DOTS_TO_WIN
+                || getCountSymbolInRightDiagonal(symbol) == DOTS_TO_WIN) {
+            return true;
+        }
+
         for (int i = 0; i < SIZE; i++) {
-            int row = 0, col = 0;
-
-            if (map[i][i] == symb) {
-                diag1++;
+            if (getCountSymbolInRow(i, symbol) == DOTS_TO_WIN) {
+                return true;
             }
-            if (map[i][SIZE - i - 1] == symb) {
-                diag2++;
-            }
-
-            for (int j = 0; j < SIZE; j++) {
-                if (map[i][j] == symb) {
-                    row++;
-                }
-                if (map[j][i] == symb) {
-                    col++;
-                }
-            }
-            if (row == SIZE || col == SIZE || diag1 == SIZE || diag2 == SIZE) {
+            if (getCountSymbolInColumn(i, symbol) == DOTS_TO_WIN) {
                 return true;
             }
         }
         return false;
+    }
+
+    private static int getCountSymbolInRow(int rowNum, char symbol) {
+        int countSym = 0;
+        for (int j = 0; j < SIZE; j++) {
+            if (map[rowNum][j] == symbol) {
+                countSym++;
+            }
+        }
+        return countSym;
+    }
+
+    private static int getCountSymbolInColumn(int colNum, char symbol) {
+        int countSym = 0;
+        for (int j = 0; j < SIZE; j++) {
+            if (map[j][colNum] == symbol) {
+                countSym++;
+            }
+        }
+        return countSym;
+    }
+
+    private static int getCountSymbolInLeftDiagonal(char symbol) {
+        int countSym = 0;
+        for (int i = 0; i < SIZE; i++) {
+            if (map[i][i] == symbol) {
+                countSym++;
+            }
+        }
+        return countSym;
+    }
+
+    private static int getCountSymbolInRightDiagonal(char symbol) {
+        int countSym = 0;
+        for (int i = 0; i < SIZE; i++) {
+            if (map[i][SIZE - i - 1] == symbol) {
+                countSym++;
+            }
+        }
+        return countSym;
     }
 
     public static boolean isMapFull() {
@@ -78,48 +112,24 @@ public class GameXO {
         return true;
     }
 
-//    public static void aiTurn() {
-//        int x, y;
-//        do {
-//            x = rand.nextInt(SIZE);
-//            y = rand.nextInt(SIZE);
-//        } while (!isCellValid(x, y));
-//        System.out.println("Компьютер походил в точку " + (x + 1) + " " + (y + 1));
-//        map[y][x] = DOT_O;
-//    }
-
     public static void aiTurn() {
-        for (int i = 0; i < SIZE; i++) {
-            for (int j = 0; j < SIZE; j++) {
-                if (map[i][j] == DOT_X) {
-                    getDotsAroundX(i, j);
-                }
-            }
-        }
-    }
-
-    private static void getDotsAroundX(int x, int y) {
-        for (int i = x - 1; i <= x + 1; i++) {
-            for (int j = y - 1; j <= y + 1; j++) {
-                if (i < 0 || i >= SIZE || j < 0 || j >= SIZE) {
-                    continue;
-                }
-                if (map[i][j] == DOT_EMPTY) {
-                    map[i][j] = DOT_O;
-                    return;
-                }
-            }
-        }
+        int x, y;
+        do {
+            x = rand.nextInt(SIZE);
+            y = rand.nextInt(SIZE);
+        } while (!isCellValid(x, y));
+        System.out.println("Компьютер походил в точку " + (x + 1) + " " + (y + 1));
+        map[y][x] = DOT_O;
     }
 
     public static void humanTurn() {
-        int x, y;
         do {
+            sc = new Scanner(System.in);
             System.out.println("Введите координаты в формате X Y");
-            x = sc.nextInt() - 1;
-            y = sc.nextInt() - 1;
-        } while (!isCellValid(x, y)); // while(isCellValid(x, y) == false)
-        map[y][x] = DOT_X;
+            humanX = sc.hasNextInt() ? sc.nextInt() - 1 : -1;
+            humanY = sc.hasNextInt() ? sc.nextInt() - 1 : -1;
+        } while (!isCellValid(humanX, humanY));
+        map[humanY][humanX] = DOT_X;
     }
 
     public static boolean isCellValid(int x, int y) {
